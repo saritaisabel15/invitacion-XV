@@ -426,6 +426,12 @@
       font-weight: 1100;
       letter-spacing:.08em;
       z-index: 3;
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .seal.hide{
+      opacity:0;
+      transform: translate(-50%,-50%) scale(.90);
+      pointer-events:none;
     }
 
     .miniNote{
@@ -451,16 +457,18 @@
     .letterOverlay.active{ display:flex; }
 
     .letterSheet{
-      width: min(860px, 96vw);
-      max-height: min(86vh, 820px);
+      width: min(980px, 98vw);
+      height: min(92vh, 980px);
       border-radius: 26px;
-      background: rgba(255,255,255,.86);
+      background: rgba(255,255,255,.90);
       border: 1px solid rgba(255,79,154,.18);
       box-shadow: 0 26px 110px rgba(36,10,28,.18);
       overflow:hidden;
       position:relative;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
+      display:flex;
+      flex-direction:column;
     }
     .letterSheetHeader{
       padding: 20px 18px 12px;
@@ -469,6 +477,7 @@
       background:
         radial-gradient(900px 450px at 20% 0%, rgba(255,111,174,.20), transparent 60%),
         linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.72));
+      flex: 0 0 auto;
     }
     .letterSheetHeader h3{
       margin:0 0 6px;
@@ -483,17 +492,17 @@
 
     .letterSheetBody{
       padding: 18px 18px 10px;
-      overflow:auto; /* natural page scroll if super long */
-      max-height: calc(min(86vh, 820px) - 150px);
+      overflow:auto;
+      flex: 1 1 auto;
     }
     .letterText{
       margin:0 auto;
-      max-width: 720px;
-      white-space: pre-wrap; /* keeps line breaks if you add them in msg */
-      line-height: 1.8;
+      max-width: 780px;
+      white-space: pre-wrap;
+      line-height: 1.85;
       color: rgba(42,31,42,.90);
       font-weight: 650;
-      font-size: 1.05rem;
+      font-size: 1.06rem;
       text-align: left;
     }
 
@@ -505,6 +514,7 @@
       justify-content:center;
       border-top: 1px solid rgba(255,79,154,.12);
       background: rgba(255,255,255,.72);
+      flex: 0 0 auto;
     }
 
     /* ===== Screen 3: Invitation ===== */
@@ -681,6 +691,13 @@
       z-index:1;
       pointer-events:none;
     }
+
+    /* ===== Admin panel responsive tweaks ===== */
+    #adminPanel{ padding-bottom: env(safe-area-inset-bottom); }
+    @media (max-width: 520px){
+      #adminPanel > div { max-height: 56vh; overflow:auto; }
+      #adminPanel input, #adminPanel textarea { font-size: 16px; }
+    }
   </style>
 </head>
 
@@ -772,7 +789,7 @@
         <div class="letterStage">
           <div class="envelope" id="envelope" aria-label="Sobre">
             <div class="flap"></div>
-            <div class="seal">S</div>
+            <div class="seal" id="seal">S</div>
           </div>
           <div class="miniNote">Toca el sobre ✨</div>
         </div>
@@ -782,7 +799,7 @@
     <!-- SCREEN 3: Invitation -->
     <section class="card screen" id="screenInvite">
       <div class="inviteHeader">
-        <h2 class="big">Mis XV años ✨</h2>
+        <h2 class="big">Mis XV años✨</h2>
         <p class="line">
           Te invito a celebrar una noche mágica llena de flores, mariposas y brillo.
         </p>
@@ -845,6 +862,92 @@
     <div class="msg">
       <h3 id="veilTitle">Desbloqueado 🦋</h3>
       <p id="veilText">Abriendo…</p>
+    </div>
+  </div>
+
+  <!-- Admin Generator (solo aparece con ?admin=1) -->
+  <div id="adminPanel" style="display:none; position:fixed; inset:auto 14px 14px 14px; z-index:120;">
+    <div style="
+      max-width: 980px; margin: 0 auto;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(255,79,154,.22);
+      border-radius: 22px;
+      box-shadow: 0 26px 110px rgba(36,10,28,.18);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      overflow:hidden;
+    ">
+      <div style="
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(255,79,154,.14);
+        background: radial-gradient(900px 450px at 20% 0%, rgba(255,111,174,.18), transparent 60%),
+                    linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
+        display:flex; justify-content:space-between; align-items:center; gap:10px;
+      ">
+        <div>
+          <div style="letter-spacing:.16em; text-transform:uppercase; font-weight:900; font-size:.72rem; color:rgba(123,90,114,.92);">
+            Panel de dedicatorias
+          </div>
+          <div style="font-weight:1100; color:rgba(42,31,42,.92);">Generador de links (solo tú lo ves)</div>
+        </div>
+        <button id="adminClose" class="ghost" type="button">Ocultar</button>
+      </div>
+
+      <div style="padding: 14px 16px; display:grid; gap:10px;">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <label style="display:grid; gap:6px;">
+            <span style="font-weight:900; color:rgba(123,90,114,.92);">Nombre (to)</span>
+            <input id="adminTo" placeholder="Ej: Andrea" style="
+              width:100%; padding:12px 12px; border-radius:16px;
+              border:1px solid rgba(255,79,154,.18);
+              background: rgba(255,255,255,.86);
+              font-weight:850; outline:none;
+            "/>
+          </label>
+
+          <label style="display:grid; gap:6px;">
+            <span style="font-weight:900; color:rgba(123,90,114,.92);">Tu link base</span>
+            <input id="adminBase" placeholder="Se auto-llena" style="
+              width:100%; padding:12px 12px; border-radius:16px;
+              border:1px solid rgba(255,79,154,.18);
+              background: rgba(255,255,255,.70);
+              font-weight:850; outline:none;
+            "/>
+          </label>
+        </div>
+
+        <label style="display:grid; gap:6px;">
+          <span style="font-weight:900; color:rgba(123,90,114,.92);">Dedicatoria (msg)</span>
+          <textarea id="adminMsg" rows="4" placeholder="Escribe aquí tu dedicatoria… (puede ser larguísima y con saltos de línea)" style="
+            width:100%; padding:12px 12px; border-radius:16px;
+            border:1px solid rgba(255,79,154,.18);
+            background: rgba(255,255,255,.86);
+            font-weight:750; outline:none; resize: vertical;
+            line-height:1.5;
+          "></textarea>
+        </label>
+
+        <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start;">
+          <button id="adminGen" type="button">Generar link</button>
+          <button id="adminCopy" class="secondary" type="button">Copiar</button>
+          <button id="adminOpen" class="secondary" type="button">Abrir prueba</button>
+          <button id="adminClear" class="ghost" type="button">Limpiar</button>
+        </div>
+
+        <label style="display:grid; gap:6px;">
+          <span style="font-weight:900; color:rgba(123,90,114,.92);">Link generado</span>
+          <input id="adminOut" readonly style="
+            width:100%; padding:12px 12px; border-radius:16px;
+            border:1px solid rgba(255,79,154,.18);
+            background: rgba(255,255,255,.70);
+            font-weight:850; outline:none;
+          "/>
+        </label>
+
+        <div id="adminHint" style="color:rgba(123,90,114,.92); font-weight:750;">
+          Tip: puedes poner saltos de línea en la dedicatoria. El link los conserva.
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1142,6 +1245,7 @@
     const btnSave = document.getElementById('btnSave');
     const btnContinue = document.getElementById('btnContinue');
     const btnCloseLetter = document.getElementById('btnCloseLetter');
+    const seal = document.getElementById('seal');
 
     // Personalize via URL:
     // ?to=Andrea&msg=Tu%20mensaje%20largo...
@@ -1154,6 +1258,8 @@
 
     function openLetter(){
       ensureAudio(); okChime();
+      // Oculta el sello apenas se abre la carta (para que no aparezca)
+      seal?.classList.add("hide");
       showVeil("💌", "Tienes una carta…", 900);
       setTimeout(()=>{
         letterOverlay.classList.add('active');
@@ -1230,177 +1336,89 @@
     }
     tickCountdown();
     setInterval(tickCountdown, 1000);
+
     /* =========================
-   ADMIN LINK GENERATOR (solo con ?admin=1)
-========================= */
-(function(){
-  const qs = new URLSearchParams(location.search);
-  const isAdmin = qs.get("admin") === "1";
+       ADMIN LINK GENERATOR (solo con ?admin=1)
+       (CORREGIDO: espera a que el DOM exista)
+    ========================= */
+    window.addEventListener("DOMContentLoaded", () => {
+      const qs = new URLSearchParams(location.search);
+      const isAdmin = qs.get("admin") === "1";
 
-  const panel = document.getElementById("adminPanel");
-  if(!panel) return;
+      const panel = document.getElementById("adminPanel");
+      if(!panel) return;
 
-  const baseInput = document.getElementById("adminBase");
-  const toInput = document.getElementById("adminTo");
-  const msgInput = document.getElementById("adminMsg");
-  const outInput = document.getElementById("adminOut");
-  const hint = document.getElementById("adminHint");
+      const baseInput = document.getElementById("adminBase");
+      const toInput = document.getElementById("adminTo");
+      const msgInput = document.getElementById("adminMsg");
+      const outInput = document.getElementById("adminOut");
+      const hint = document.getElementById("adminHint");
 
-  const btnGen = document.getElementById("adminGen");
-  const btnCopy = document.getElementById("adminCopy");
-  const btnOpen = document.getElementById("adminOpen");
-  const btnClear = document.getElementById("adminClear");
-  const btnClose = document.getElementById("adminClose");
+      const btnGen = document.getElementById("adminGen");
+      const btnCopy = document.getElementById("adminCopy");
+      const btnOpen = document.getElementById("adminOpen");
+      const btnClear2 = document.getElementById("adminClear");
+      const btnClose2 = document.getElementById("adminClose");
 
-  // Link base automático (sin query params)
-  const cleanBase = location.origin + location.pathname;
-  baseInput.value = cleanBase;
+      const cleanBase = location.origin + location.pathname;
+      baseInput.value = cleanBase;
 
-  if(isAdmin){
-    panel.style.display = "block";
-    hint.textContent = "Modo creadora activo: genera links y envíalos. Los invitados NO verán este panel.";
-  }
+      if(isAdmin){
+        panel.style.display = "block";
+        hint.textContent = "Modo creadora activo: genera links y envíalos. Los invitados NO verán este panel.";
+      }
 
-  function buildLink(){
-    const base = (baseInput.value || cleanBase).trim();
-    const to = (toInput.value || "").trim();
-    const msg = (msgInput.value || "").trim();
+      function buildLink(){
+        const base = (baseInput.value || cleanBase).trim();
+        const to = (toInput.value || "").trim();
+        const msg = (msgInput.value || "").trim();
 
-    // codifica perfecto espacios, emojis, saltos de línea, etc.
-    const params = new URLSearchParams();
-    if(to) params.set("to", to);
-    if(msg) params.set("msg", msg);
+        const params = new URLSearchParams();
+        if(to) params.set("to", to);
+        if(msg) params.set("msg", msg);
 
-    // importante: NO incluimos admin=1 en el link que se manda
-    return params.toString() ? `${base}?${params.toString()}` : base;
-  }
+        return params.toString() ? `${base}?${params.toString()}` : base;
+      }
 
-  btnGen?.addEventListener("click", ()=>{
-    ensureAudio?.(); clickSound?.();
-    outInput.value = buildLink();
-    hint.textContent = "Listo. Copia ese link y envíalo por WhatsApp.";
-  });
+      btnGen?.addEventListener("click", ()=>{
+        ensureAudio?.(); clickSound?.();
+        outInput.value = buildLink();
+        hint.textContent = "Listo. Copia ese link y envíalo por WhatsApp.";
+      });
 
-  btnCopy?.addEventListener("click", async ()=>{
-    ensureAudio?.(); clickSound?.();
-    if(!outInput.value) outInput.value = buildLink();
-    try{
-      await navigator.clipboard.writeText(outInput.value);
-      hint.textContent = "✅ Copiado al portapapeles.";
-      showVeil?.("✅ Copiado", "Ya puedes pegarlo en WhatsApp.", 900);
-    }catch(e){
-      // fallback
-      outInput.select();
-      document.execCommand("copy");
-      hint.textContent = "✅ Copiado (modo compatibilidad).";
-    }
-  });
+      btnCopy?.addEventListener("click", async ()=>{
+        ensureAudio?.(); clickSound?.();
+        if(!outInput.value) outInput.value = buildLink();
+        try{
+          await navigator.clipboard.writeText(outInput.value);
+          hint.textContent = "✅ Copiado al portapapeles.";
+          showVeil?.("✅ Copiado", "Ya puedes pegarlo en WhatsApp.", 900);
+        }catch(e){
+          outInput.select();
+          document.execCommand("copy");
+          hint.textContent = "✅ Copiado (modo compatibilidad).";
+        }
+      });
 
-  btnOpen?.addEventListener("click", ()=>{
-    ensureAudio?.(); okChime?.();
-    if(!outInput.value) outInput.value = buildLink();
-    window.open(outInput.value, "_blank", "noopener");
-  });
+      btnOpen?.addEventListener("click", ()=>{
+        ensureAudio?.(); okChime?.();
+        if(!outInput.value) outInput.value = buildLink();
+        window.open(outInput.value, "_blank", "noopener");
+      });
 
-  btnClear?.addEventListener("click", ()=>{
-    ensureAudio?.(); clickSound?.();
-    toInput.value = "";
-    msgInput.value = "";
-    outInput.value = "";
-    hint.textContent = "Limpio. Escribe otra dedicatoria.";
-  });
+      btnClear2?.addEventListener("click", ()=>{
+        ensureAudio?.(); clickSound?.();
+        toInput.value = "";
+        msgInput.value = "";
+        outInput.value = "";
+        hint.textContent = "Limpio. Escribe otra dedicatoria.";
+      });
 
-  btnClose?.addEventListener("click", ()=>{
-    ensureAudio?.(); clickSound?.();
-    panel.style.display = "none";
-  });
-})();
-
+      btnClose2?.addEventListener("click", ()=>{
+        ensureAudio?.(); clickSound?.();
+        panel.style.display = "none";
+      });
+    });
   </script>
-  <!-- Admin Generator (solo aparece con ?admin=1) -->
-<div id="adminPanel" style="display:none; position:fixed; inset:auto 14px 14px 14px; z-index:120;">
-  <div style="
-    max-width: 980px; margin: 0 auto;
-    background: rgba(255,255,255,.88);
-    border: 1px solid rgba(255,79,154,.22);
-    border-radius: 22px;
-    box-shadow: 0 26px 110px rgba(36,10,28,.18);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    overflow:hidden;
-  ">
-    <div style="
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,79,154,.14);
-      background: radial-gradient(900px 450px at 20% 0%, rgba(255,111,174,.18), transparent 60%),
-                  linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.82));
-      display:flex; justify-content:space-between; align-items:center; gap:10px;
-    ">
-      <div>
-        <div style="letter-spacing:.16em; text-transform:uppercase; font-weight:900; font-size:.72rem; color:rgba(123,90,114,.92);">
-          Panel de dedicatorias
-        </div>
-        <div style="font-weight:1100; color:rgba(42,31,42,.92);">Generador de links (solo tú lo ves)</div>
-      </div>
-      <button id="adminClose" class="ghost" type="button">Ocultar</button>
-    </div>
-
-    <div style="padding: 14px 16px; display:grid; gap:10px;">
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-        <label style="display:grid; gap:6px;">
-          <span style="font-weight:900; color:rgba(123,90,114,.92);">Nombre (to)</span>
-          <input id="adminTo" placeholder="Ej: Andrea" style="
-            width:100%; padding:12px 12px; border-radius:16px;
-            border:1px solid rgba(255,79,154,.18);
-            background: rgba(255,255,255,.86);
-            font-weight:850; outline:none;
-          "/>
-        </label>
-
-        <label style="display:grid; gap:6px;">
-          <span style="font-weight:900; color:rgba(123,90,114,.92);">Tu link base</span>
-          <input id="adminBase" placeholder="Se auto-llena" style="
-            width:100%; padding:12px 12px; border-radius:16px;
-            border:1px solid rgba(255,79,154,.18);
-            background: rgba(255,255,255,.70);
-            font-weight:850; outline:none;
-          "/>
-        </label>
-      </div>
-
-      <label style="display:grid; gap:6px;">
-        <span style="font-weight:900; color:rgba(123,90,114,.92);">Dedicatoria (msg)</span>
-        <textarea id="adminMsg" rows="4" placeholder="Escribe aquí tu dedicatoria… (puede ser larguísima y con saltos de línea)" style="
-          width:100%; padding:12px 12px; border-radius:16px;
-          border:1px solid rgba(255,79,154,.18);
-          background: rgba(255,255,255,.86);
-          font-weight:750; outline:none; resize: vertical;
-          line-height:1.5;
-        "></textarea>
-      </label>
-
-      <div style="display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-start;">
-        <button id="adminGen" type="button">Generar link</button>
-        <button id="adminCopy" class="secondary" type="button">Copiar</button>
-        <button id="adminOpen" class="secondary" type="button">Abrir prueba</button>
-        <button id="adminClear" class="ghost" type="button">Limpiar</button>
-      </div>
-
-      <label style="display:grid; gap:6px;">
-        <span style="font-weight:900; color:rgba(123,90,114,.92);">Link generado</span>
-        <input id="adminOut" readonly style="
-          width:100%; padding:12px 12px; border-radius:16px;
-          border:1px solid rgba(255,79,154,.18);
-          background: rgba(255,255,255,.70);
-          font-weight:850; outline:none;
-        "/>
-      </label>
-
-      <div id="adminHint" style="color:rgba(123,90,114,.92); font-weight:750;">
-        Tip: puedes poner saltos de línea en la dedicatoria. El link los conserva.
-      </div>
-    </div>
-  </div>
-</div>
 </body>
 </html>
