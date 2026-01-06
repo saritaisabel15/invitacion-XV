@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="es">
 <head>
@@ -83,19 +84,26 @@
     }
 
     /* ===== Layout ===== */
+    /* FIX: centrado real en móvil (cambiamos grid->flex y fijamos anchos) */
     .wrap{
       position:relative;
       z-index:1;
+      width: 100%;
       max-width: 980px;
       margin: 0 auto;
-      padding: 22px 14px 70px;
-      display:grid;
-      place-items:center;
+      padding: 22px 12px 70px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
       min-height: 100vh;
     }
 
+    /* FIX: width segura (sin vw que descuadre) */
     .card{
-      width: min(860px, 96vw);
+      width: 100%;
+      max-width: 860px;
+      margin-left:auto;
+      margin-right:auto;
       background: var(--card);
       border: 1px solid var(--stroke);
       border-radius: var(--radius);
@@ -167,7 +175,8 @@
     }
 
     .status{
-      width: min(700px, 92vw);
+      width: 100%;
+      max-width: 700px;
       min-height: 46px;
       padding: 12px 14px;
       border-radius: 16px;
@@ -213,7 +222,8 @@
 
     /* ===== Screen 1: Secret code ===== */
     .lockPanel{
-      width: min(780px, 94vw);
+      width: 100%;
+      max-width: 780px;
       border-radius: 24px;
       background: rgba(255,255,255,.68);
       border: 1px solid rgba(255,79,154,.14);
@@ -339,6 +349,8 @@
       gap: 12px;
       position:relative;
       z-index:1;
+      width: 100%;
+      max-width: 780px;
     }
     @media (max-width: 560px){
       .symbols{ grid-template-columns: repeat(2, 1fr); }
@@ -379,14 +391,16 @@
 
     /* ===== Screen 2: Envelope only ===== */
     .letterStage{
-      width: min(780px, 94vw);
+      width: 100%;
+      max-width: 780px;
       display:grid;
       gap: 14px;
       justify-items:center;
       padding-bottom: 6px;
     }
     .envelope{
-      width: min(640px, 92vw);
+      width: 100%;
+      max-width: 640px;
       height: 230px;
       border-radius: 22px;
       background: linear-gradient(135deg, rgba(255,209,227,.72), rgba(255,255,255,.82));
@@ -457,7 +471,8 @@
     .letterOverlay.active{ display:flex; }
 
     .letterSheet{
-      width: min(980px, 98vw);
+      width: 100%;
+      max-width: 980px;
       height: min(92vh, 980px);
       border-radius: 26px;
       background: rgba(255,255,255,.90);
@@ -548,6 +563,7 @@
       padding: 18px 22px 26px;
       display:grid;
       gap:12px;
+      width: 100%;
     }
     .info{
       display:flex;
@@ -698,6 +714,34 @@
       #adminPanel > div { max-height: 56vh; overflow:auto; }
       #adminPanel input, #adminPanel textarea { font-size: 16px; }
     }
+
+    /* ===== FIX DEFINITIVO CENTRADO MOBILE ===== */
+    @media (max-width: 600px){
+      body{
+        display:flex;
+        justify-content:center;
+      }
+      .wrap{
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .card{
+        width:100%;
+        max-width: 100%;
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .header, .body{
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+      .lockPanel, .letterStage, .inviteBody, .letterSheet{
+        width:100%;
+        max-width:100%;
+        margin-left:auto;
+        margin-right:auto;
+      }
+    }
   </style>
 </head>
 
@@ -799,7 +843,7 @@
     <!-- SCREEN 3: Invitation -->
     <section class="card screen" id="screenInvite">
       <div class="inviteHeader">
-        <h2 class="big">Mis XV años✨</h2>
+        <h2 class="big">XV ✨</h2>
         <p class="line">
           Te invito a celebrar una noche mágica llena de flores, mariposas y brillo.
         </p>
@@ -1247,8 +1291,6 @@
     const btnCloseLetter = document.getElementById('btnCloseLetter');
     const seal = document.getElementById('seal');
 
-    // Personalize via URL:
-    // ?to=Andrea&msg=Tu%20mensaje%20largo...
     const params = new URLSearchParams(location.search);
     const toName = params.get("to") || "mi persona favorita";
     const msg = params.get("msg") || "Gracias por ser parte de mi vida.\nMe hace muy feliz que estés aquí conmigo en este momento tan especial 💗\n\n(Escribe aquí tu dedicatoria larga sin miedo.)";
@@ -1258,7 +1300,6 @@
 
     function openLetter(){
       ensureAudio(); okChime();
-      // Oculta el sello apenas se abre la carta (para que no aparezca)
       seal?.classList.add("hide");
       showVeil("💌", "Tienes una carta…", 900);
       setTimeout(()=>{
@@ -1296,7 +1337,6 @@
       }, 1050);
     });
 
-    // Close overlay with ESC
     window.addEventListener('keydown', (e)=>{
       if(e.key === "Escape" && letterOverlay.classList.contains('active')){
         closeLetter();
@@ -1306,13 +1346,11 @@
     /* =========================
        INVITE: WhatsApp confirm + countdown
     ========================= */
-    const phone = "573026318347"; // +57 3026318347
+    const phone = "573026318347";
     const waMsg = encodeURIComponent("Holaa 💗 Confirmo mi asistencia a tus XV (Sara Isabel Carrillo Gutierrez).");
     document.getElementById('waLink').href = `https://wa.me/${phone}?text=${waMsg}`;
 
-    // 28 Feb 2026 19:00 Colombia (UTC-5) = 2026-03-01 00:00Z
     const targetUTC = Date.UTC(2026, 2, 1, 0, 0, 0);
-
     const dEl = document.getElementById('d');
     const hEl = document.getElementById('h');
     const mEl = document.getElementById('m');
@@ -1339,7 +1377,7 @@
 
     /* =========================
        ADMIN LINK GENERATOR (solo con ?admin=1)
-       (CORREGIDO: espera a que el DOM exista)
+       (CORREGIDO: DOMContentLoaded)
     ========================= */
     window.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(location.search);
