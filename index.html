@@ -99,8 +99,13 @@
       min-height:auto;
     }
 
+    /* FIX: evitar corrimientos por vw en móvil */
     .card{
-      width: min(860px, 96vw);
+      width: 100%;
+      max-width: 860px;
+      margin-left:auto;
+      margin-right:auto;
+
       background: var(--card);
       border: 1px solid var(--stroke);
       border-radius: var(--radius);
@@ -172,7 +177,8 @@
     }
 
     .status{
-      width: min(700px, 92vw);
+      width: 100%;
+      max-width: 700px;
       min-height: 46px;
       padding: 12px 14px;
       border-radius: 16px;
@@ -181,6 +187,8 @@
       color: rgba(123,90,114,.95);
       line-height:1.35;
       text-align:center;
+      margin-left:auto;
+      margin-right:auto;
     }
 
     .btnRow{
@@ -216,6 +224,91 @@
       box-shadow:none;
     }
 
+    /* ===== NEW: Pantalla previa (letrero + botón que aparece luego) ===== */
+    .preBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius:999px;
+      background: rgba(255,209,227,.36);
+      border: 1px solid rgba(255,79,154,.18);
+      color: rgba(255,79,154,.95);
+      font-weight: 1100;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      box-shadow: 0 14px 30px rgba(36,10,28,.06);
+    }
+    .preBox{
+      width: 100%;
+      max-width: 780px;
+      border-radius: 24px;
+      background:
+        radial-gradient(900px 450px at 20% 0%, rgba(255,111,174,.22), transparent 60%),
+        linear-gradient(135deg, rgba(255,79,154,.14), rgba(255,255,255,.80));
+      border: 1px solid rgba(255,79,154,.22);
+      box-shadow: 0 22px 70px rgba(36,10,28,.12);
+      padding: 18px 16px 18px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .preBox::before{
+      content:"";
+      position:absolute;
+      inset:-70px;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,255,255,.75), transparent 45%),
+        radial-gradient(circle at 84% 30%, rgba(255,209,227,.60), transparent 55%),
+        radial-gradient(circle at 55% 92%, rgba(255,111,174,.18), transparent 60%);
+      opacity:.55;
+      transform: rotate(10deg);
+      pointer-events:none;
+    }
+    .preBoxInner{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:10px;
+      justify-items:center;
+    }
+    .preTitle{
+      margin: 0;
+      font-size: clamp(1.75rem, 4.6vw, 2.55rem);
+      line-height:1.08;
+      letter-spacing:.01em;
+      font-weight: 1200;
+      color: rgba(42,31,42,.95);
+      text-shadow: 0 16px 36px rgba(255,79,154,.10);
+    }
+    .preText{
+      margin:0;
+      max-width: 680px;
+      color: rgba(123,90,114,.95);
+      line-height:1.65;
+      font-size: 1.05rem;
+      font-weight: 780;
+    }
+    .preHint{
+      margin: 2px 0 0;
+      color: rgba(255,79,154,.92);
+      font-weight: 1000;
+      letter-spacing:.02em;
+    }
+    .preBtn{
+      opacity:0;
+      transform: translateY(8px);
+      pointer-events:none;
+      transition: opacity .35s ease, transform .35s ease;
+      padding: 14px 18px;
+      border-radius: 18px;
+    }
+    .preBtn.show{
+      opacity:1;
+      transform: translateY(0);
+      pointer-events:auto;
+    }
+
     /* ===== Screen 0: Intro ===== */
     .attentionTitle{
       margin: 2px 0 10px;
@@ -240,13 +333,16 @@
       box-shadow: 0 14px 30px rgba(36,10,28,.06);
     }
     .introBox{
-      width: min(780px, 94vw);
+      width: 100%;
+      max-width: 780px;
       border-radius: 24px;
       background: rgba(255,255,255,.70);
       border: 1px solid rgba(255,79,154,.14);
       box-shadow: 0 18px 60px rgba(36,10,28,.08);
       padding: 16px 16px 18px;
       text-align:left;
+      margin-left:auto;
+      margin-right:auto;
     }
     .introBox h3{
       margin: 0 0 10px;
@@ -268,7 +364,8 @@
 
     /* ===== Screen 1: Secret code ===== */
     .lockPanel{
-      width: min(780px, 94vw);
+      width: 100%;
+      max-width: 780px;
       border-radius: 24px;
       background: rgba(255,255,255,.68);
       border: 1px solid rgba(255,79,154,.14);
@@ -277,6 +374,8 @@
       gap: 12px;
       position:relative;
       overflow:hidden;
+      margin-left:auto;
+      margin-right:auto;
     }
     .lockPanel::before{
       content:"";
@@ -434,14 +533,18 @@
 
     /* ===== Screen 2: Envelope only ===== */
     .letterStage{
-      width: min(780px, 94vw);
+      width: 100%;
+      max-width: 780px;
       display:grid;
       gap: 14px;
       justify-items:center;
       padding-bottom: 6px;
+      margin-left:auto;
+      margin-right:auto;
     }
     .envelope{
-      width: min(640px, 92vw);
+      width: 100%;
+      max-width: 640px;
       height: 230px;
       border-radius: 22px;
       background: linear-gradient(135deg, rgba(255,209,227,.72), rgba(255,255,255,.82));
@@ -452,6 +555,8 @@
       cursor:pointer;
       user-select:none;
       transition: transform .12s ease;
+      margin-left:auto;
+      margin-right:auto;
     }
     .envelope:active{ transform: scale(.99); }
 
@@ -512,7 +617,8 @@
     .letterOverlay.active{ display:flex; }
 
     .letterSheet{
-      width: min(980px, 98vw);
+      width: 100%;
+      max-width: 980px;
       height: min(92vh, 980px);
       border-radius: 26px;
       background: rgba(255,255,255,.90);
@@ -754,32 +860,12 @@
       #adminPanel input, #adminPanel textarea { font-size: 16px; }
     }
 
-    /* ===== FIX: centrar contenedores internos (soluciona corrimiento en iPhone) ===== */
-    .body{
-      width: 100%;
-    }
-
-    .introBox,
-    .lockPanel,
-    .letterStage{
-      width: 100%;
-      max-width: 780px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .status{
-      width: 100%;
-      max-width: 700px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .envelope{
-      width: 100%;
-      max-width: 640px;
-      margin-left: auto;
-      margin-right: auto;
+    /* ===== FIX: centrar contenedores internos en móvil ===== */
+    @media (max-width: 820px){
+      html, body{ overflow-x: hidden; }
+      .wrap{ padding-left:14px; padding-right:14px; }
+      .card{ margin-left:auto; margin-right:auto; }
+      .body{ justify-items:center; }
     }
   </style>
 </head>
@@ -789,50 +875,69 @@
 
   <div class="wrap">
 
+    <!-- SCREEN PRE: LETRERO IMPACTO -->
+    <section class="card screen active" id="screenPre">
+      <div class="header">
+        <div class="preBadge">✨ Solo para ti ✨</div>
+      </div>
+
+      <div class="body">
+        <div class="preBox">
+          <div class="preBoxInner">
+            <h2 class="preTitle">Estás a punto de formar parte de una noche mágica ✨</h2>
+            <p class="preText">No es casualidad que estés aquí 💗</p>
+            <p class="preHint">Solo tú puedes abrir lo que sigue…</p>
+          </div>
+        </div>
+
+        <div class="btnRow">
+          <button id="btnPreContinue" class="preBtn" type="button">Continuar 💌</button>
+        </div>
+      </div>
+    </section>
+
     <!-- SCREEN 0: INTRO / INSTRUCCIONES -->
-    <!-- SCREEN 0: INTRO / INSTRUCCIONES -->
-<section class="card screen active" id="screenIntro">
-  <div class="header">
-    <div class="attentionBadge">✨ Lee primero ✨</div>
-    <h2 class="attentionTitle">ATENCIÓN:</h2>
-    <p class="sub">
-      Esta es una mini-dinámica para <b>desbloquear la invitación</b> 💌✨
-    </p>
-  </div>
+    <section class="card screen" id="screenIntro">
+      <div class="header">
+        <div class="attentionBadge">✨ Lee primero ✨</div>
+        <h2 class="attentionTitle">ATENCIÓN:</h2>
+        <p class="sub">
+          Esta es una mini-dinámica para <b>desbloquear la invitación</b> 💌✨
+        </p>
+      </div>
 
-  <div class="body">
-    <div class="introBox">
-      <h3>¿Cómo se juega?</h3>
-      <ol class="introSteps">
-        <li>
-          Primero verás <b>3 pistas</b> (CAMPO, ALAS, PRINCESA). <br/>
-          Esas pistas te dicen <b>qué símbolo elegir</b> en cada paso.
-        </li>
-        <li>
-          Abajo hay <b>4 símbolos</b>. Tienes que <b>tocarlos en el orden correcto</b>
-          según lo que describen las pistas.
-        </li>
-        <li>
-          Cuando completes el orden correcto, se desbloquea el siguiente paso ✨
-        </li>
-      </ol>
-      <p class="introTip">
-        Tip: si te equivocas, usa <b>“Borrar”</b> y prueba otra vez 💗
-      </p>
-    </div>
+      <div class="body">
+        <div class="introBox">
+          <h3>¿Cómo se juega?</h3>
+          <ol class="introSteps">
+            <li>
+              Primero verás <b>3 pistas</b> (CAMPO, ALAS, PRINCESA). <br/>
+              Esas pistas te dicen <b>qué símbolo elegir</b> en cada paso.
+            </li>
+            <li>
+              Abajo hay <b>4 símbolos</b>. Tienes que <b>tocarlos en el orden correcto</b>
+              según lo que describen las pistas.
+            </li>
+            <li>
+              Cuando completes el orden correcto, se desbloquea el siguiente paso ✨
+            </li>
+          </ol>
+          <p class="introTip">
+            Tip: si te equivocas, usa <b>“Borrar”</b> y prueba otra vez 💗
+          </p>
+        </div>
 
-    <div class="btnRow">
-      <button id="btnIntroGo" type="button" style="padding:14px 18px; border-radius:18px;">
-        Entendido, comenzar ✅
-      </button>
-    </div>
+        <div class="btnRow">
+          <button id="btnIntroGo" type="button" style="padding:14px 18px; border-radius:18px;">
+            Entendido, comenzar ✅
+          </button>
+        </div>
 
-    <div class="status">
-      Solo sigue las pistas… y toca los símbolos en el orden que te indiquen 😌✨
-    </div>
-  </div>
-</section>
-
+        <div class="status">
+          Solo sigue las pistas… y toca los símbolos en el orden que te indiquen 😌✨
+        </div>
+      </div>
+    </section>
 
     <!-- SCREEN 1: Secret Code -->
     <section class="card screen" id="screenCode">
@@ -936,10 +1041,9 @@
         <div class="info"><div class="k">👑 Cumpleañera</div><div class="v">Sara Isabel Carrillo Gutierréz</div></div>
         <div class="info"><div class="k">📅 Fecha</div><div class="v">Sábado 28 de febrero, 2026</div></div>
         <div class="info"><div class="k">🕖 Hora</div><div class="v">7:00 pm.</div></div>
-        <div class="info"><div class="k">📍 Lugar</div><div class="v">Granja Piscícola Caquetá</div></div>
+        <div class="info"><div class="k">📍 Lugar</div><div class="v">Granja Piscícola Caqueta</div></div>
         <div class="info"><div class="k">👗 Dress code</div><div class="v">Elegante · Blanco</div></div>
         <div class="info"><div class="k">💌 Lluvia de sobres</div><div class="v">Agradecida con tu cariño</div></div>
-
 
         <div class="countdownBox">
           <div class="countdownTitle">Faltan…</div>
@@ -957,6 +1061,7 @@
             <span class="arrow">›</span>
           </a>
         </div>
+      </div>
     </section>
 
   </div>
@@ -1236,16 +1341,29 @@
     /* =========================
        Screen switching
     ========================= */
+    const screenPre = document.getElementById('screenPre');
     const screenIntro = document.getElementById('screenIntro');
     const screenCode = document.getElementById('screenCode');
     const screenLetter = document.getElementById('screenLetter');
     const screenInvite = document.getElementById('screenInvite');
 
     function goTo(screen){
-      [screenIntro, screenCode, screenLetter, screenInvite].forEach(s=>s.classList.remove('active'));
+      [screenPre, screenIntro, screenCode, screenLetter, screenInvite].forEach(s=>s.classList.remove('active'));
       screen.classList.add('active');
       window.scrollTo({top:0, behavior:'smooth'});
     }
+
+    /* ===== PRE SCREEN: mostrar botón luego de unos segundos ===== */
+    const btnPreContinue = document.getElementById('btnPreContinue');
+    window.addEventListener("DOMContentLoaded", ()=>{
+      setTimeout(()=>{
+        btnPreContinue.classList.add('show');
+      }, 1600);
+    });
+    btnPreContinue.addEventListener('click', ()=>{
+      ensureAudio(); clickSound();
+      goTo(screenIntro);
+    });
 
     // Intro button
     document.getElementById('btnIntroGo').addEventListener('click', ()=>{
@@ -1568,4 +1686,3 @@
   </script>
 </body>
 </html>
-
