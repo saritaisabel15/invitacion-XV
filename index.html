@@ -83,15 +83,20 @@
     }
 
     /* ===== Layout ===== */
+    /* FIX scroll-friendly centering */
     .wrap{
       position:relative;
       z-index:1;
       max-width: 980px;
       margin: 0 auto;
       padding: 22px 14px 70px;
-      display:grid;
-      place-items:center;
-      min-height: 100vh;
+
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+
+      min-height:auto;
     }
 
     .card{
@@ -209,6 +214,56 @@
       background: transparent;
       border: 1px dashed rgba(255,79,154,.26);
       box-shadow:none;
+    }
+
+    /* ===== Screen 0: Intro ===== */
+    .attentionTitle{
+      margin: 2px 0 10px;
+      font-size: clamp(2.4rem, 5vw, 3.35rem);
+      line-height: 1.02;
+      letter-spacing: .02em;
+      font-weight: 1200;
+      color: rgba(42,31,42,.95);
+    }
+    .attentionBadge{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius:999px;
+      background: rgba(255,209,227,.36);
+      border: 1px solid rgba(255,79,154,.18);
+      color: rgba(255,79,154,.95);
+      font-weight: 1100;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      box-shadow: 0 14px 30px rgba(36,10,28,.06);
+    }
+    .introBox{
+      width: min(780px, 94vw);
+      border-radius: 24px;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(255,79,154,.14);
+      box-shadow: 0 18px 60px rgba(36,10,28,.08);
+      padding: 16px 16px 18px;
+      text-align:left;
+    }
+    .introBox h3{
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+      color: rgba(42,31,42,.92);
+    }
+    .introSteps{
+      margin: 0;
+      padding-left: 18px;
+      color: rgba(123,90,114,.96);
+      font-weight: 820;
+      line-height: 1.65;
+    }
+    .introTip{
+      margin: 10px 0 0;
+      color: rgba(123,90,114,.92);
+      font-weight: 760;
     }
 
     /* ===== Screen 1: Secret code ===== */
@@ -706,8 +761,53 @@
 
   <div class="wrap">
 
+    <!-- SCREEN 0: INTRO / INSTRUCCIONES -->
+    <!-- SCREEN 0: INTRO / INSTRUCCIONES -->
+<section class="card screen active" id="screenIntro">
+  <div class="header">
+    <div class="attentionBadge">✨ Lee primero ✨</div>
+    <h2 class="attentionTitle">ATENCIÓN:</h2>
+    <p class="sub">
+      Esta es una mini-dinámica para <b>desbloquear la invitación</b> 💌✨
+    </p>
+  </div>
+
+  <div class="body">
+    <div class="introBox">
+      <h3>¿Cómo se juega?</h3>
+      <ol class="introSteps">
+        <li>
+          Primero verás <b>3 pistas</b> (CAMPO, ALAS, PRINCESA). <br/>
+          Esas pistas te dicen <b>qué símbolo elegir</b> en cada paso.
+        </li>
+        <li>
+          Abajo hay <b>4 símbolos</b>. Tienes que <b>tocarlos en el orden correcto</b>
+          según lo que describen las pistas.
+        </li>
+        <li>
+          Cuando completes el orden correcto, se desbloquea el siguiente paso ✨
+        </li>
+      </ol>
+      <p class="introTip">
+        Tip: si te equivocas, usa <b>“Borrar”</b> y prueba otra vez 💗
+      </p>
+    </div>
+
+    <div class="btnRow">
+      <button id="btnIntroGo" type="button" style="padding:14px 18px; border-radius:18px;">
+        Entendido, comenzar ✅
+      </button>
+    </div>
+
+    <div class="status">
+      Solo sigue las pistas… y toca los símbolos en el orden que te indiquen 😌✨
+    </div>
+  </div>
+</section>
+
+
     <!-- SCREEN 1: Secret Code -->
-    <section class="card screen active" id="screenCode">
+    <section class="card screen" id="screenCode">
       <div class="header">
         <p class="kicker">ACCESO ENCRIPTADO</p>
         <h2 class="title">Descifra el orden</h2>
@@ -806,11 +906,13 @@
       </div>
 
       <div class="inviteBody">
-        <div class="info"><div class="k">👑 Cumpleañera</div><div class="v">Sara Isabel Carrillo Gutierrez</div></div>
+        <div class="info"><div class="k">👑 Cumpleañera</div><div class="v">Sara Isabel Carrillo Gutierréz</div></div>
         <div class="info"><div class="k">📅 Fecha</div><div class="v">Sábado 28 de febrero, 2026</div></div>
-        <div class="info"><div class="k">🕖 Hora</div><div class="v">7:00 p. m.</div></div>
-        <div class="info"><div class="k">📍 Lugar</div><div class="v">Indefinido</div></div>
+        <div class="info"><div class="k">🕖 Hora</div><div class="v">7:00 pm.</div></div>
+        <div class="info"><div class="k">📍 Lugar</div><div class="v">Granja Piscícola Caqueta</div></div>
         <div class="info"><div class="k">👗 Dress code</div><div class="v">Elegante · Blanco</div></div>
+        <div class="info"><div class="k">💌 Lluvia de sobres</div><div class="v">Agradecida con tu cariño</div></div>
+
 
         <div class="countdownBox">
           <div class="countdownTitle">Faltan…</div>
@@ -828,12 +930,6 @@
             <span class="arrow">›</span>
           </a>
         </div>
-
-        <div class="footerNote">
-          💌 Habrá <b>lluvia de sobres</b>.<br/>
-          Gracias por acompañarme en este día tan especial 💗
-        </div>
-      </div>
     </section>
 
   </div>
@@ -1113,15 +1209,22 @@
     /* =========================
        Screen switching
     ========================= */
+    const screenIntro = document.getElementById('screenIntro');
     const screenCode = document.getElementById('screenCode');
     const screenLetter = document.getElementById('screenLetter');
     const screenInvite = document.getElementById('screenInvite');
 
     function goTo(screen){
-      [screenCode, screenLetter, screenInvite].forEach(s=>s.classList.remove('active'));
+      [screenIntro, screenCode, screenLetter, screenInvite].forEach(s=>s.classList.remove('active'));
       screen.classList.add('active');
       window.scrollTo({top:0, behavior:'smooth'});
     }
+
+    // Intro button
+    document.getElementById('btnIntroGo').addEventListener('click', ()=>{
+      ensureAudio(); clickSound();
+      goTo(screenCode);
+    });
 
     /* =========================
        SECRET CODE GAME
@@ -1165,10 +1268,10 @@
       return true;
     }
 
-    function passToLetter(){
+    function passToLetter(customTitle="Acceso concedido 🦋", customText="Abriendo…"){
       ensureAudio();
       okChime();
-      showVeil("Acceso concedido 🦋", "Abriendo…", 1100);
+      showVeil(customTitle, customText, 1100);
       setTimeout(()=>{
         document.title = "Mensaje";
         goTo(screenLetter);
@@ -1201,9 +1304,27 @@
         }
       }
 
-      statusCode.innerHTML = "Acceso concedido ✅";
-      locked = false;
-      passToLetter();
+      // Intento 2:
+      if(isCorrect){
+        statusCode.innerHTML = "Acceso concedido ✅";
+        locked = false;
+        passToLetter();
+        return;
+      }
+
+      // Si no lo logra en 2 intentos: chistoso + igual pasa
+      ensureAudio();
+      errorTick();
+      statusCode.innerHTML = "JAJA tranqui 😭 Igual te dejamos pasar…";
+      showVeil(
+        "Ay no lo lograste 🤭",
+        "Pero igual pasas 😌 (y por tu error no olvides echar más en la lluvia de sobres jajaja 💌)",
+        3000
+      );
+      setTimeout(()=>{
+        locked = false;
+        passToLetter("Acceso VIP por intento 😂", "Entrando…");
+      }, 1580);
     }
 
     document.querySelectorAll('.sym').forEach(el=>{
@@ -1258,7 +1379,6 @@
 
     function openLetter(){
       ensureAudio(); okChime();
-      // Oculta el sello apenas se abre la carta (para que no aparezca)
       seal?.classList.add("hide");
       showVeil("💌", "Tienes una carta…", 900);
       setTimeout(()=>{
@@ -1339,7 +1459,6 @@
 
     /* =========================
        ADMIN LINK GENERATOR (solo con ?admin=1)
-       (CORREGIDO: espera a que el DOM exista)
     ========================= */
     window.addEventListener("DOMContentLoaded", () => {
       const qs = new URLSearchParams(location.search);
@@ -1381,18 +1500,18 @@
       }
 
       btnGen?.addEventListener("click", ()=>{
-        ensureAudio?.(); clickSound?.();
+        ensureAudio(); clickSound();
         outInput.value = buildLink();
         hint.textContent = "Listo. Copia ese link y envíalo por WhatsApp.";
       });
 
       btnCopy?.addEventListener("click", async ()=>{
-        ensureAudio?.(); clickSound?.();
+        ensureAudio(); clickSound();
         if(!outInput.value) outInput.value = buildLink();
         try{
           await navigator.clipboard.writeText(outInput.value);
           hint.textContent = "✅ Copiado al portapapeles.";
-          showVeil?.("✅ Copiado", "Ya puedes pegarlo en WhatsApp.", 900);
+          showVeil("✅ Copiado", "Ya puedes pegarlo en WhatsApp.", 900);
         }catch(e){
           outInput.select();
           document.execCommand("copy");
@@ -1401,13 +1520,13 @@
       });
 
       btnOpen?.addEventListener("click", ()=>{
-        ensureAudio?.(); okChime?.();
+        ensureAudio(); okChime();
         if(!outInput.value) outInput.value = buildLink();
         window.open(outInput.value, "_blank", "noopener");
       });
 
       btnClear2?.addEventListener("click", ()=>{
-        ensureAudio?.(); clickSound?.();
+        ensureAudio(); clickSound();
         toInput.value = "";
         msgInput.value = "";
         outInput.value = "";
@@ -1415,7 +1534,7 @@
       });
 
       btnClose2?.addEventListener("click", ()=>{
-        ensureAudio?.(); clickSound?.();
+        ensureAudio(); clickSound();
         panel.style.display = "none";
       });
     });
