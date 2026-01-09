@@ -939,6 +939,27 @@
 html, body{
   overflow-x: hidden;
 }
+/* ===== Botón Confirmar asistencia en fucsia ===== */
+a.action{
+  background: linear-gradient(135deg, var(--rose), var(--pink-2)) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 16px 32px rgba(255,79,154,.18);
+}
+
+a.action small{
+  color: rgba(255,255,255,.95) !important;
+}
+
+a.action .arrow{
+  color: white !important;
+}
+
+a.action:hover{
+  transform: translateY(-1px);
+  filter: brightness(1.03);
+}
+
 
   </style>
 </head>
@@ -954,7 +975,7 @@ html, body{
       <div class="spaceKicker">ACCESO PRIVADO</div>
       <h2 class="spaceTitle">Estás a punto de hacer parte de una noche mágica ✨</h2>
       <p class="spaceText">
-        Este link no es cualquiera: guarda una sorpresa. Solo tú puedes abrirlo...
+        Este link no es cualquiera. Guarda una sorpresa, y solo tú puedes abrirlo.
       </p>
       <div class="spaceCTA">
         <button class="spaceBtn" id="spaceContinue" type="button">Continuar</button>
@@ -1121,7 +1142,7 @@ html, body{
 
         <div class="actions">
           <a class="action" id="waLink" href="#" target="_blank" rel="noopener">
-            <span>✅ Confirmar asistencia <small>hasta el 28 de enero</small></span>
+            <span>✅ Confirmar asistencia <small>hasta el 27 de enero</small></span>
             <span class="arrow">›</span>
           </a>
         </div>
@@ -1598,7 +1619,7 @@ html, body{
     // ?to=Andrea&msg=Tu%20mensaje%20largo...
     const params = new URLSearchParams(location.search);
     const toName = params.get("to") || "mi persona favorita";
-    const msg = params.get("msg") || "Gracias por ser parte de mi vida.\nMe hace muy feliz que estés aquí conmigo en este momento tan especial 💗\n\n(Escribe aquí tu dedicatoria larga sin miedo.)";
+    const msg = params.get("msg") || "Gracias por ser parte de mi vida.\nMe hace muy feliz que estés aquí conmigo en este momento tan especial 💗\n\n";
 
     letterTo.textContent = `Para ${toName} ✨`;
     letterText.textContent = msg;
@@ -1767,5 +1788,3 @@ html, body{
   </script>
 </body>
 </html>
-
-
